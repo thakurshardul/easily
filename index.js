@@ -1,6 +1,7 @@
 import express from "express";
 import expressEjsLayouts from "express-ejs-layouts";
 import path from "path";
+import { connectToDB } from "./src/config/mongodb.config.js";
 import userController from "./src/controllers/user.controller.js";
 import jobsController from "./src/controllers/jobs.controller.js";
 import {auth} from "./src/middlewares/auth.middleware.js";
@@ -11,6 +12,7 @@ import applicantController from "./src/controllers/applicant.controller.js";
 const app=express();
 app.listen(3200,()=>{
     console.log("server is listening at 3200 port");
+    connectToDB();
 })
 
 
