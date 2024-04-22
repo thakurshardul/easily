@@ -1,0 +1,81 @@
+<div class="flex justify-center items-center h-[100vh]">
+    <form action="/updateJob/<%=job.jobId%>" method="post">
+    
+        <div class="bg-white flex flex-col justify-center items-start border-2 border-blue-500 rounded-lg text-black py-6 px-4" >
+        <div class="flex justify-center font-extrabold text-lg mb-4 w-full"><span class="px-4 border-b-4 border-b-black rounded-md"> Update this posted job </span></div>
+            <div class="mb-3">
+            <label for="jobCategory" class="mr-4">Select new job category:</label>
+            <select name="jobCategory" id="jobCategory" class="border-2 border-black rounded-md">
+                <option value="Tech">Tech</option>
+                <option value="Non Tech">Non Tech</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="mr-3" for="jobDesignation">Select new job designation:</label>
+            <select name="jobDesignation" id="jobDesignation" class="border-2 border-black rounded-md">
+                <option value="HR">HR</option>
+                <option value="Product Manager"> Product Manager</option>
+            
+                <option value="SDE">SDE</option>
+            
+                <option value="DevOps">DevOps</option>
+            
+                <option value="MERN developer">MERN developer</option>
+            
+                <option value="MEAN developer">MEAN developer</option>
+            
+                <option value="Front End Developer">Front End Developer</option>
+            
+                <option value="Back End Developer">Back End Developer</option>
+            
+                <option value="Fullstack engineer">Fullstack engineer</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="jobLocation" class="mr-3">Enter new job location</label>
+            <input type="text" name="jobLocation" id="jobLocation" class="border-2 border-black rounded-md" value="<%=job.jobLocation%>">
+        </div>
+        <div class="mb-3">
+            <label for="company" class="mr-3">Company Name</label>
+            <input type="text" name="company" id="company" class="border-2 border-black rounded-md" value="<%=job.companyName%>">
+        </div>
+        <div class="mb-3">
+        <!-- salary and total open positions -->
+            <input type="text" id="salary" name="salary" placeholder="salary" class="border-2 border-black rounded-md" value="<%=job.salary%>">
+            <input type="number" id="openings" name="openings" placeholder="total positions" class="border-2 border-black rounded-md" value="<%=job.openings%>">
+        </div>
+        <div class="mb-3 flex items-center">
+            <label for="skills" class="mr-3">
+                Select skills required for this new job
+            </label>
+            <select name="skills" id="skills" class="border-2 border-black rounded-md" aria-placeholder="select skills" multiple>
+                <option value="Java">Java</option>
+                <option value="HTML">HTML</option>
+                <option value="CSS">CSS</option>
+                <option value="JS">JS</option>
+                <option value="React">React</option>
+                <option value="NodeJS">NodeJs</option>
+                <option value="MongoDB">MongoDB</option>
+                <option value="Express">Express</option>
+                <option value="Angular">Angular</option>
+                <option value="Git">Git</option>
+                <option value="Communication skills">Communication skills</option>
+                <option value="Negotiation skills">Negotiation skills</option>
+                <option value="Leadership">Leadership</option>
+                <option value="Team Management">Team Management</option>
+                <option value="Cloud">Cloud</option>
+                
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="lastDate" class="mr-3">apply by</label>
+            <input type="date" id="lastDate" name="lastDate" class="border-2 border-black rounded-md" value="<%=job.lastDate%>">
+        </div>
+        <div class="flex justify-center w-full mt-5">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md">Update</button>
+        </div>
+    </div>
+</form>
+</div>
+
+
