@@ -1,59 +1,86 @@
-import jobsModel from "../models/jobs.model.js";
-import userModel from "../models/users.model.js";
+import ApplicantsRepository from "../repositories/applicants.repository.js";
+const applicantRepository=new ApplicantsRepository();
+import JobsRepository from "../repositories/jobs.repository.js";
 import { resumeUpload } from "../middlewares/resumeUpload.middleware.js";
 import vaildateRequest from "../middlewares/validation.middleware.js"
-export default class jobsController{
-    static getHomepage(req,res){
+import { ObjectId } from "mongodb";
+export default class JobsController{
+    constructor(){
+        this.jobRepository=new JobsRepository();
+    }
+    getHomepage(req,res){
         //console.log(path.join(path.resolve()))
-        res.render("index",{userId:req.session.userId});
+        res.render("index",{userId:req.session.userId,role:req.session.role});
     }
-    static getJobsPage(req,res){
-        const jobs=jobsModel.getJobs();
-        res.render("jobs",{jobs:jobs,userId:req.session.userId})
+    async getJobsPage(req,res){
+        const jobs=await this.jobRepository.getJobs();
+        //console.log("user id is "+req.session.userId)
+        res.render("jobs",{jobs:jobs,userId:req.session.userId,role:req.session.role})
     }
-    static getNewJob(req,res){
-        res.render("newJob",{userId:req.session.userId});
+    getNewJob(req,res){
+        if(req.session.role=="recruiter"){
+            res.render("newJob",{userId:req.session.userId,role:req.session.role});
+        }
+        else{
+            res.status(400).send("bad request");
+        }
+        
     }
     //implement to add a new job in jobs model
-    static postNewJob(req,res){
+    async postNewJob(req,res){
         //console.log(req.body);
-        jobsModel.addNewJob(req.body,req.session.userId);
-        res.redirect("/jobs")
+        if(req.session.role=="recruiter"){
+            await this.jobRepository.addNewJob(req.body,req.session.userId);
+            res.redirect("/jobs")
+        }else{
+            res.status(400).send("bad request");
+        }
+        
     }
-    static viewDetails(req,res){
+    async viewDetails(req,res){
         const id=req.params.id;
-        const job=jobsModel.getJobById(id);
+        const job=await this.jobRepository.getJobById(id);
         if(job){
-            res.render("viewDetails",{job:job,userId:req.session.userId})
+            res.render("viewDetails",{job:job,userId:req.session.userId,role:req.session.role})
         }
         else{
             res.send("job not found!!!");
         }
     }
-    static getApplyPage(req,res){
+    getApplyPage(req,res){
         const id=req.params.id;
-        res.render("applyForJob",{userId:req.session.userId,id:id})
+        res.render("applyForJob",{userId:req.session.userId,id:id,role:req.session.role})
     }
-    static applyforJob(req,res){
+    async applyforJob(req,res){
         const id=req.params.id;
+        const {name,email,contact}=req.body;
+        //console.log(req.file.path);
+        const resumePath="/resume/"+req.file.filename;
+        const idReturned=await applicantRepository.addNewApplicant(name,email,contact,resumePath);
+        await this.jobRepository.applicantsOfJob(idReturned,id);
+        res.redirect("/jobs");
+
+
+
+        
         
 
     }
-    static deleteJob(req,res){
+    async deleteJob(req,res){
         const id=req.params.id;
-        jobsModel.deleteJob(id);
+        await this.jobRepository.deleteJob(id);
         res.redirect("/jobs");
     }
-    static getUpdatePage(req,res){
+    async getUpdatePage(req,res){
         const id=req.params.id;
-        const job=jobsModel.getJobById(id);
+        const job=await this.jobRepository.getJobById(id);
         res.render("updateJob",{userId:req.session.userId,job:job});
     }
-    static updateJob(req,res){
+    async updateJob(req,res){
         const id=req.params.id;
         const newJobData=req.body;
-        console.log(newJobData);
-        jobsModel.updateJob(id,newJobData);
+        //console.log(newJobData);
+        await this.jobRepository.updateJob(id,newJobData);
         res.redirect("/jobs");
     }
 }

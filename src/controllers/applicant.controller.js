@@ -1,13 +1,16 @@
-import applicantModel from "../models/applicants.model.js";
-import jobsModel from "../models/jobs.model.js";
-export default class applicantController{
-    static getApplicants(req,res,next){
+import ApplicantsRepository from "../repositories/applicants.repository.js";
+import JobsRepository from "../repositories/jobs.repository.js";
+export default class ApplicantController{
+    constructor(){
+        this.applicantRepository=new ApplicantsRepository();
+        this.jobRepository=new JobsRepository();
+    }
+    async getApplicants(req,res){
         const id=req.params.id;
-        const job=jobsModel.getJobById(id);
-        const applicants=job.applicantList;
-        const applicantList=applicantModel.getApplicantByids(applicants);
-        console.log(applicantList);
+        const job=await this.jobRepository.getJobById(id);
+        const applicantIDS=job.applicantList;
+        const applicantList=await this.applicantRepository.getApplicantByids(applicantIDS);
+        //console.log(applicantList);
         res.render("applicantList",{applicantList:applicantList});
-
     }
 }

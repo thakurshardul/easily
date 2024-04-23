@@ -1,11 +1,15 @@
+import UserRepository from "../repositories/user.repository.js";
 
-import userModel from "../models/users.model.js"
-export default class userController{
-    static loginRecruiter(req,res){
+export default class UserController{
+    constructor(){
+        this.userRepository=new UserRepository();
+    }
+    async loginRecruiter(req,res){
         const{email,password}=req.body;
-        const user=userModel.isUserRegistered(email,password);
+        const user=await this.userRepository.isUserRegistered(email,password);
         if(user){
-            req.session.userId=user.userId;
+            req.session.userId=user._id;
+            req.session.role=user.role;
             res.redirect("/jobs");
         }
         else{
@@ -13,18 +17,19 @@ export default class userController{
         }
         
     }
-    static registerRecruiter(req,res){
-        const {name,email,password}=req.body;
-        userModel.addNewUser(name,email,password);
+    async registerRecruiter(req,res){
+        console.log(req.body);
+        const {name,email,password,role}=req.body;
+        await this.userRepository.addNewUser(name,email,password,role);
         res.redirect("/login");
     }
-    static getLoginPage(req,res){
+    getLoginPage(req,res){
         res.render("login",{errorMessage:null});
     }
-    static getRegistrationPage(req,res){
+    getRegistrationPage(req,res){
         res.render("register")
     }
-    static logout(req, res) {
+    logout(req, res) {
         req.session.destroy((err) => {
         if (err) {
         console.log(err);

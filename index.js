@@ -2,12 +2,18 @@ import express from "express";
 import expressEjsLayouts from "express-ejs-layouts";
 import path from "path";
 import { connectToDB } from "./src/config/mongodb.config.js";
-import userController from "./src/controllers/user.controller.js";
-import jobsController from "./src/controllers/jobs.controller.js";
+import UserController from "./src/controllers/user.controller.js";
+const userController=new UserController();
+
+import JobsController from "./src/controllers/jobs.controller.js";
+const jobsController=new JobsController();
+
 import {auth} from "./src/middlewares/auth.middleware.js";
 import session from "express-session";
 import { resumeUpload } from "./src/middlewares/resumeUpload.middleware.js";
-import applicantController from "./src/controllers/applicant.controller.js";
+import ApplicantController from "./src/controllers/applicant.controller.js";
+const applicantController=new ApplicantController();
+import {authorization} from "./src/middlewares/authorized.middleware.js";
 
 const app=express();
 app.listen(3200,()=>{
@@ -33,28 +39,28 @@ app.use(session({
   }))
 
 //handle homepage request
-app.get("/",jobsController.getHomepage);
+app.get("/",(req,res)=>{jobsController.getHomepage(req,res)});
 //get all the jobs page view
-app.get("/jobs",jobsController.getJobsPage)
+app.get("/jobs",(req,res)=>{jobsController.getJobsPage(req,res)})
 // get login page
-app.get("/login",userController.getLoginPage);
+app.get("/login",(req,res)=>{userController.getLoginPage(req,res)});
 //get register page
-app.get("/register",userController.getRegistrationPage);
+app.get("/register",(req,res)=>{userController.getRegistrationPage(req,res)});
 //handle login event
-app.post("/login",userController.loginRecruiter,auth,jobsController.getJobsPage);
+app.post("/login",(req,res)=>{userController.loginRecruiter(req,res)});
 //handle register event
-app.post("/register",userController.registerRecruiter);
-app.get("/viewDetails/:id",jobsController.viewDetails);
-
-app.get("/newJob",auth,jobsController.getNewJob);
-app.post("/newJob",auth,jobsController.postNewJob);
-app.get("/updatejob/:id",auth,jobsController.getUpdatePage)
-app.post("/updatejob/:id",auth,jobsController.updateJob)
-app.get("/deleteJob/:id",auth,jobsController.deleteJob);
-app.get("/applyJob/:id",jobsController.getApplyPage)
-app.post("/applyjob/:id",resumeUpload.single("resume"),jobsController.applyforJob)
-app.get("/viewApplicants/:id",applicantController.getApplicants)
-app.get("/logout",auth,userController.logout);
+app.post("/register",(req,res)=>{userController.registerRecruiter(req,res)});
+app.get("/viewDetails/:id",(req,res)=>{jobsController.viewDetails(req,res)});
+//secure routes
+app.get("/newJob",auth,(req,res)=>{jobsController.getNewJob(req,res)});
+app.post("/newJob",auth,(req,res)=>{jobsController.postNewJob(req,res)});
+app.get("/updatejob/:id", authorization,(req,res)=>{jobsController.getUpdatePage(req,res)})
+app.post("/updatejob/:id", authorization,(req,res)=>{jobsController.updateJob(req,res)})
+app.get("/deleteJob/:id", authorization,(req,res)=>{jobsController.deleteJob(req,res)});
+app.get("/applyJob/:id",auth,(req,res)=>{jobsController.getApplyPage(req,res)})
+app.post("/applyjob/:id",auth,resumeUpload.single("resume"),(req,res)=>{jobsController.applyforJob(req,res)})
+app.get("/viewApplicants/:id",(req,res)=>{applicantController.getApplicants(req,res)})
+app.get("/logout",auth,(req,res)=>{userController.logout(req,res)});
 
 
 
