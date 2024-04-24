@@ -38,9 +38,10 @@
                                         if(locals.role=="recruiter"){%>
                                         <a href="/logout" class="text-gray-700 block px-4 py-2 text-sm" >Logout</a>
                                         <a href="/newJob" class="text-gray-700 block px-4 py-2 text-sm">Post a new job</a>
+                                        
                                     <%}else if(locals.role=="jobSeeker"){%>
                                         <a href="/logout" class="text-gray-700 block px-4 py-2 text-sm" >Logout</a>
-                                        <a href="/newJob" class="text-gray-700 block px-4 py-2 text-sm" >Applied jobs</a>
+                                        <a href="/appliedJobs/:<%=locals.userId%>" class="text-gray-700 block px-4 py-2 text-sm" >Applied jobs</a>
                                     <%}}
                                         else{%>
                                         <a href="/register" class="text-gray-700 block px-4 py-2 text-sm" >Register</a>

@@ -1,0 +1,21 @@
+if user comes to our site and is not logged in or registered
+    -he can only view the posted jobs and can access the login and registration pages
+    -he can also use search functionality
+    -if he tries to apply to a job or post a new job he should be authenticated first by auth middleware which eventually will redirect the user to login page
+    -if he tries to update or delete any job he should be authorized first and check whether he is authorized to do so or not and eventually it will throw bad request with 400 status code
+
+now let us assume that user is not registered and gets registerd himself first and the logs in which will in turn create a session for that user and assign userid and his role (recruiter/jobSeeker) depending upon the registration details.
+
+now if user is recruiter
+    -he can post new jobs
+    -he can see the status of all of his posted jobs
+    -he can update or delete jobs that he has posted himself
+    -he can see all the applicant details for any of his particular posted jobs
+    -he should not be able to apply for the jobs that he has posted himself
+
+if user is jobSeeker 
+    -he can only apply for jobs
+    -he can view all the jobs that he has applied for
+    -he can not update or delete any job neither should he post a new job and if he tries the server should respond with 400 bad request
+     
+
