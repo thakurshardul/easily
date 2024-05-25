@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-const url="mongodb://127.0.0.1:27017/easily"
+const url="mongodb+srv://thakurshardul1:vikram@2607@cluster0.ydkiz5s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 let client;
 export const connectToDB=async ()=>{
     try{
@@ -12,5 +12,5 @@ export const connectToDB=async ()=>{
     
 }
 export const getDB=async()=>{
-    return await client.db();
+    return await client.db("easily");
 }
