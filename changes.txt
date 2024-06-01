@@ -17,5 +17,9 @@ if user is jobSeeker
     -he can only apply for jobs
     -he can view all the jobs that he has applied for
     -he can not update or delete any job neither should he post a new job and if he tries the server should respond with 400 bad request
+
+
+search functionality
+
      
 

@@ -1,0 +1,19 @@
+easily-MVC application
+postaway-REST API
+chattUp-Socket based application
+StoreFleet-Ecommerce application
+
+node HTTP connection
+file system in node
+custom events in node
+migration to express and several setup and applications
+BASIC Auth
+JWT Auth
+File upload using multer 
+Express validator
+CORS policy
+Documentation of API using SWAGGER
+MongoDB (crud operations,indexing,custom id generation,operators,aggregation pipeline)
+Mongoose ODM
+
+

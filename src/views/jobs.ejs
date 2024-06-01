@@ -1,14 +1,15 @@
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 box-border sm:gap-x-8 gap-y-4 px-4 py-6 w-full items-start bg-black overflow-x-hidden">
+<% if(jobs.length>0){ %>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 box-border sm:gap-x-8 gap-y-4 px-4 py-6 w-full items-start bg-black overflow-x-hidden">
     <!-- first job card -->
-    <% jobs.forEach(job =>{ %>
-        <div id="card" class="flex flex-col items-start w-full border-2 border-white rounded-md py-3">
+        <% jobs.forEach(job =>{ %>
+            <div id="card" class="flex flex-col items-start w-full border-2 border-white rounded-md py-3">
         <!-- header of a single card -->
-        <div class="flex flex-col h[30%] text-white justify-start mx-3">
-            <div class="hidden"><%=job._id%></div>
-            <div class="flex bg-blue-800 rounded-md px-3 py-2 gap-x-1">
-                <div>Actively Hiring</div>
-                <div><i class="fa-solid fa-chart-line" style="color:#fff"></i></div>
-            </div>
+            <div class="flex flex-col h[30%] text-white justify-start mx-3">
+                <div class="hidden"><%=job._id%></div>
+                <div class="flex bg-blue-800 rounded-md px-3 py-2 gap-x-1">
+                    <div>Actively Hiring</div>
+                    <div><i class="fa-solid fa-chart-line" style="color:#fff"></i></div>
+                </div>
             <div class="flex text-yellow-400"><%=job.companyName%></div>
             <div class="flex gap-x-1">
                 <span class="text-white"><%=job.jobCategory%></span>
@@ -39,6 +40,6 @@
             </div>
         </div>
     </div>
-    <%})%>
-    
-</div>
+<% })}else{ %>
+    <div class= "flex justify-center items-center h-[90vh]"><div class="text-white text-4xl">No jobs found!!!</div></div>
+    <%}%>

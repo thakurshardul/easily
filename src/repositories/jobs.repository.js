@@ -6,6 +6,11 @@ export default class JobsRepository{
         const jobsCollection=db.collection("jobs")
         return await jobsCollection.find().toArray();
     }
+    async getJobByName(name){
+        const db=await getDB();
+        const jobsCollection=db.collection("jobs")
+        return await jobsCollection.find({companyName:name}).toArray();
+    }
     async getJobById(id){
         const db=await getDB();
         const jobsCollection=db.collection("jobs")
@@ -53,5 +58,12 @@ export default class JobsRepository{
         const db=await getDB();
         const jobsCollection=db.collection("jobs")
         await jobsCollection.updateOne({_id:new ObjectId(jobId)},{$push:{applicantList:id},$inc:{applicants:1}}) ;
+    }
+    async filter(location,technology){
+        const db=await getDB();
+        const jobsCollection=db.collection("jobs");
+        const data=await jobsCollection.find({jobLocation:location,skillsRequired:{$all:technology}}).toArray();
+        //console.log(data);
+        return data;
     }
 }

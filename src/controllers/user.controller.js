@@ -10,6 +10,7 @@ export default class UserController{
         if(user){
             req.session.userId=user._id;
             req.session.role=user.role;
+            req.session.email=user.email;
             res.redirect("/jobs");
         }
         else{

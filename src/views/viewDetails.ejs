@@ -54,8 +54,10 @@
                 <%if(userId==job.recruiterId){%>
                     <a class="rounded-md px-4 py-2 bg-[#a7a5a5] text-black">Apply now</a>
                 <%}
-                else{%>
+                else if(userId!=job.recruiterId && !applied){%>
                     <a href="/applyJob/<%=job._id%>" class="rounded-md px-4 py-2 bg-blue-800 text-white">Apply now</a>
+                <%}else{%>
+                    <a class="rounded-md px-4 py-2 bg-[#a7a5a5] text-black">Applied on <%=time%></a>
                 <%}%>
                 
             </div>

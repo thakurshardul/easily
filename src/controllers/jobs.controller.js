@@ -4,6 +4,9 @@ import JobsRepository from "../repositories/jobs.repository.js";
 import { resumeUpload } from "../middlewares/resumeUpload.middleware.js";
 import vaildateRequest from "../middlewares/validation.middleware.js"
 import { ObjectId } from "mongodb";
+import UserRepository from "../repositories/user.repository.js";
+const userRepository=new UserRepository();
+
 export default class JobsController{
     constructor(){
         this.jobRepository=new JobsRepository();
@@ -40,8 +43,22 @@ export default class JobsController{
     async viewDetails(req,res){
         const id=req.params.id;
         const job=await this.jobRepository.getJobById(id);
-        if(job){
-            res.render("viewDetails",{job:job,userId:req.session.userId,role:req.session.role})
+        const email=req.session.email;
+       
+        const applicants=job.applicantList;
+        let isAlreadyapplied;
+        if(applicants){
+            isAlreadyapplied=applicants.find((applicant)=>applicant==email);
+        }
+        const time=await applicantRepository.getTime(email,id);
+        console.log(time);
+
+        
+        
+        if(job&&isAlreadyapplied){
+            res.render("viewDetails",{job:job,userId:req.session.userId,role:req.session.role,applied:isAlreadyapplied,time:time||null});
+        }else if(job&&  !isAlreadyapplied){
+            res.render("viewDetails",{job:job,userId:req.session.userId,role:req.session.role,applied:null,time:time||null});
         }
         else{
             res.send("job not found!!!");
@@ -54,16 +71,17 @@ export default class JobsController{
     async applyforJob(req,res){
         const id=req.params.id;
         const {name,email,contact}=req.body;
-        //console.log(req.file.path);
         const resumePath="/resume/"+req.file.filename;
-        const idReturned=await applicantRepository.addNewApplicant(name,email,contact,resumePath);
-        await this.jobRepository.applicantsOfJob(idReturned,id);
+        const emailReturned=await applicantRepository.addNewApplicant(name,email,contact,resumePath,id,new Date().toISOString());
+        await this.jobRepository.applicantsOfJob(emailReturned,id);
+        
         res.redirect("/jobs");
-
-
-
-        
-        
+    }
+    async searchJob(req,res){
+        const {input} =req.query;
+        const jobs=await this.jobRepository.getJobByName(input);
+        // console.log(jobs);
+        res.render("jobs",{jobs:jobs,userId:req.session.userId,role:req.session.role})
 
     }
     async deleteJob(req,res){
@@ -74,7 +92,7 @@ export default class JobsController{
     async getUpdatePage(req,res){
         const id=req.params.id;
         const job=await this.jobRepository.getJobById(id);
-        res.render("updateJob",{userId:req.session.userId,job:job});
+        res.render("updateJob",{userId:req.session.userId,role:req.session.role,job:job});
     }
     async updateJob(req,res){
         const id=req.params.id;
@@ -82,5 +100,15 @@ export default class JobsController{
         //console.log(newJobData);
         await this.jobRepository.updateJob(id,newJobData);
         res.redirect("/jobs");
+    }
+    filter(req,res){
+        res.render("fiilter");
+    }
+    async filterJobs(req,res){
+        const {jobLocation,skills}=req.query;
+        const filteredJobs=await this.jobRepository.filter(jobLocation,skills);
+        res.render("jobs",{userId:req.session.userId,role:req.session.role,jobs:filteredJobs});
+        
+        
     }
 }

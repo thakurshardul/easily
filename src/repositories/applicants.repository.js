@@ -12,26 +12,44 @@ export default class ApplicantsRepository{
         const collection=db.collection("applicants");
         return await collection.findOne({_id:new ObjectId(id)});
     }
-    async addNewApplicant(name,email,contact,resumePath){
+    async addNewApplicant(name,email,contact,resumePath,jobId,time){
         const db=await getDB();
         const collection=db.collection("applicants");
         const id=await collection.insertOne({
             name:name,
             email:email,
             contact:contact,
-            resumePath:resumePath
+            resumePath:resumePath,
+            jobsApplied:jobId,
+            appliedTime:time
         })
-        return id.insertedId;
+        return email;
         
     }
-    async getApplicantByids(applicantIDS){
+    async getApplicantByids(applicantIDS,id){
         const db=await getDB();
         const collection=db.collection("applicants");
         let applicantList=[];
-        for(let id=0;id<applicantIDS.length;id++){
-            applicantList.push(await collection.findOne({_id:new ObjectId(applicantIDS[id])}))
+        for(let i=0;i<applicantIDS.length;i++){
+            const data=await collection.findOne({email:applicantIDS[i],jobsApplied:id})
+            if (data){
+                applicantList.push(data);
+            }
         }
         return applicantList;
         
+    }
+    async getTime(email,id){
+        const db=await getDB();
+        const collection=db.collection("applicants");
+        const response=await collection.findOne({email:email,jobsApplied:id});
+        console.log(response);
+        if(response){
+            return  response.appliedTime.split("T")[0];
+        }
+        return null;
+        
+
+
     }
 }
