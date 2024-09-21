@@ -1,0 +1,45 @@
+<% if(jobs.length>0){ %>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 box-border sm:gap-x-8 gap-y-4 px-4 py-6 w-full items-start bg-black overflow-x-hidden">
+    <!-- first job card -->
+        <% jobs.forEach(job =>{ %>
+            <div id="card" class="flex flex-col items-start w-full border-2 border-white rounded-md py-3">
+        <!-- header of a single card -->
+            <div class="flex flex-col h[30%] text-white justify-start mx-3">
+                <div class="hidden"><%=job._id%></div>
+                <div class="flex bg-blue-800 rounded-md px-3 py-2 gap-x-1">
+                    <div>Actively Hiring</div>
+                    <div><i class="fa-solid fa-chart-line" style="color:#fff"></i></div>
+                </div>
+            <div class="flex text-yellow-400"><%=job.companyName%></div>
+            <div class="flex gap-x-1">
+                <span class="text-white"><%=job.jobCategory%></span>
+                <span class="text-blue-800"><%=job.jobDesignation%></span>
+            </div>
+        </div>
+        <!-- content of a single card -->
+        <div class="flex flex-col items-start h-[60%] w-full text-white px-3 mb-2 mt-4 gap-y-3">
+            <!-- location -->
+            <div class="flex gap-x-1 justify-center items-center">
+                <span><i class="fa-solid fa-location-dot"></i></span>
+                <span><%=job.jobLocation%></span>
+            </div>
+            <!-- salary -->
+            <div>
+                <span><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                <span><%=job.salary%></span>
+            </div>
+            <!-- skills -->
+            <div class="flex flex-wrap gap-x-2 gap-y-1 w-[90%]">
+                <!-- card1 -->
+                <%job.skillsRequired.forEach(skill=>{%>
+                    <div class="flex justify-center items-center px-2 py-1 border-2 border-blue-500 rounded-md"><span><%=skill%></span></div>
+                <%})%>
+            </div>
+            <div class="flex flex-col items-center justify-center h-[10%] w-full">
+                <a href="/viewDetails/<%=job._id%>" class="flex justify-center w-[80%] text-green-600 hover:text-green-800 border-2 border-green-600 hover:border-green-800 rounded-md">View Details</a>
+            </div>
+        </div>
+    </div>
+<% })}else{ %>
+    <div class= "flex justify-center items-center h-[90vh]"><div class="text-white text-4xl">No jobs found!!!</div></div>
+    <%}%>

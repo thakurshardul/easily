@@ -1,0 +1,21 @@
+<main class="flex flex-col-reverse justify-center md:flex-row w-full h-auto md:h-[90%] bg-black text-white px-3 py-5">
+    
+    <div class="w-full md:w-1/2 flex justify-center  items-center pl-6">
+        <div class="flex flex-col">
+            <div class="text-4xl font-semibold mb-6 text-blue-500">A Comprehensive platform for reliable</div>
+            <div id="animationBlock" class="text-white mb-4 tracking-widest"></div>
+            <div>Get Discovered , Get Hired</div>
+            <div class="flex gap-4 mt-4">
+                <a href="/jobs" class="bg-blue-500 hover:bg-blue-700 rounded-lg px-4 py-2">I'm a Job Seeker</a>
+                <%if(!locals.userId){%>
+                    <a href="/register" class="bg-blue-500 hover:bg-blue-700 rounded-lg px-4 py-2">I'm a Recruiter</a>
+                <%}%>
+                </div>
+        </div>
+        
+    </div>
+    <div class="w-full md:w-1/2 flex items-center h-[100%]">
+        <img src="/images/mainsvg.svg" class="w-full">
+    </div>
+</main>
+<script src="/scripts/animationHome.js"></script>

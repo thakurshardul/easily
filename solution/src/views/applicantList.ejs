@@ -38,10 +38,9 @@
                     <%=applicant.contact%>
                 </td>
                 <td class="px-6 py-4 text-center">
-                    <!-- <a id ="resumeURL" class="hidden"><%=applicant.resumePath%></a> -->
-                    <button id="getResumeButton" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline rounded-md bg-white px-3 py-2">view resume</button> 
-                    <!-- <div id="view button">view resume</div> -->
-                    <!-- <a href="/getResume/<%=applicant.resumePath %>" target="_blank" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Resume</a> -->
+                    <!-- <a id ="resumeURL" class="hidden"><%=applicant.resumePath%></a>
+                    <button id="getResumeButton" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline rounded-md bg-white px-3 py-2">view details</button> -->
+                    <a href="/getResume/<%=applicant.resumePath %>" target="_blank" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Resume</a>
                 </td>
             </tr>
             <%})%>
@@ -49,6 +48,8 @@
             
         </tbody>
     </table>
-    <embed src="">
+    <div id="iframeDiv" class="hidden">
+        
+    </div>
 
 </div>
